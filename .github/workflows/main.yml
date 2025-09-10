@@ -1,0 +1,28 @@
+name: Run Specific Tests
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest # Or windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.x' # Use your target .NET version
+
+    - name: Restore dependencies
+      run: dotnet restore Login_Registration.sln
+
+    - name: Build solution
+      run: dotnet build --no-restore
+
+    - name: Run tests on a specific project
+      run: dotnet test Login_Registration/Login_Registration/Login_RegistrationMobileApp.csproj --no-build

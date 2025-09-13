@@ -1,0 +1,104 @@
+﻿Mini Mobile Application Specification
+Prepared by: Adenike Davis
+Date: September 2025
+Version: 1.1
+
+---
+
+1. Overview
+This document specifies the requirements and scope for the Mini Mobile Application, a .NET MAUI project using the MVVM architecture. The application will be tested using the Appium framework and targets Android devices.
+
+---
+
+2. Features
+The application includes the following core features:
+- Login Page: Secure user authentication.
+- Registration Page: User account creation.
+- Dashboard (MainPage): Displays a welcome message and logout functionality.
+- Forgot Password Page: Allows users to reset their password using their username.
+
+---
+
+3. Scope
+In Scope:
+- Development and testing of the Android version.
+- Implementation and testing of login, registration, dashboard, and forgot password functionalities.
+- Security controls including login lockouts.
+
+Out of Scope:
+- iOS, Windows, and MacCatalyst versions (unless specified in future versions).
+- Integration with external authentication providers.
+
+---
+
+4. Functional Requirements
+4.1 Login Page
+- Display the message: “Let’s start the journey. Are you ready?”
+- Fields: Username, Password.
+- Actions: Login, Register, Forgot Password (navigates to Forgot Password page).
+- Validation: Username and password must be valid.
+- Security: After 3 failed login attempts, the account is locked for 30 seconds. A countdown timer is displayed if login is attempted during lockout.
+
+4.2 Registration Page
+- Fields: Full Name, Username, Password (6–8 characters), Confirm Password (6–8 characters).
+- Action: Submit.
+- Validation: All fields required; password and confirm password must match and meet length requirements; username must be unique.
+
+4.3 Forgot Password Page
+- Fields: Username, New Password (6–8 characters), Confirm New Password (6–8 characters).
+- Action: Save.
+- Validation: All fields required; password and confirm password must match and meet length requirements; username must exist.
+
+4.4 Dashboard (MainPage)
+- Display a welcome message upon successful login.
+- Action: Logout (redirects to Login Page).
+
+---
+
+5. Security Requirements
+- Invalid login credentials must not be accepted.
+- After 3 consecutive failed login attempts, the user account is locked for 30 seconds.
+- Lockout state and countdown timer are persisted in the local database.
+- Password reset is only allowed for existing usernames.
+
+---
+
+6. Data Persistence
+- All user data, authentication, and lockout states are stored in a local SQLite database.
+
+---
+
+7. Test Scenarios
+- Launch app and verify login page UI elements.
+- Register a new user and verify persistence.
+- Attempt login with valid and invalid credentials.
+- Verify lockout after 3 failed attempts and countdown timer display.
+- Reset password using Forgot Password page and verify update.
+- Access dashboard after successful login and verify welcome message.
+- Logout and verify redirection to login page.
+
+---
+
+8. Validation Rules
+- All required fields must be present and validated on each page.
+- Passwords must be 6–8 characters.
+- Username must be unique during registration and valid during login and password reset.
+- Lockout and countdown timer must function as specified.
+
+---
+
+9. Navigation
+- Login Page: Register and Forgot Password actions navigate to respective pages.
+- Successful login navigates to Dashboard.
+- Logout navigates to Login Page.
+
+---
+
+10. Architecture
+- MVVM pattern is used for separation of concerns.
+- .NET MAUI framework for cross-platform UI.
+- SQLite for local data persistence.
+
+---
+
+End of Specification

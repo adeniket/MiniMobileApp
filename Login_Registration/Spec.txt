@@ -1,7 +1,7 @@
 ﻿Mini Mobile Application Specification
 Prepared by: Adenike Davis
 Date: September 2025
-Version: 1.1
+Version: 1.2
 
 ---
 
@@ -14,7 +14,7 @@ This document specifies the requirements and scope for the Mini Mobile Applicati
 The application includes the following core features:
 - Login Page: Secure user authentication.
 - Registration Page: User account creation.
-- Dashboard (MainPage): Displays a welcome message and logout functionality.
+- Dashboard (MainPage): Displays a personalized welcome message (with full name) and login count for the user, plus logout functionality.
 - Forgot Password Page: Allows users to reset their password using their username.
 
 ---
@@ -24,6 +24,7 @@ In Scope:
 - Development and testing of the Android version.
 - Implementation and testing of login, registration, dashboard, and forgot password functionalities.
 - Security controls including login lockouts.
+- Persistent tracking of login count per user.
 
 Out of Scope:
 - iOS, Windows, and MacCatalyst versions (unless specified in future versions).
@@ -38,19 +39,23 @@ Out of Scope:
 - Actions: Login, Register, Forgot Password (navigates to Forgot Password page).
 - Validation: Username and password must be valid.
 - Security: After 3 failed login attempts, the account is locked for 30 seconds. A countdown timer is displayed if login is attempted during lockout.
+- Error messages display remaining login attempts after each failed attempt.
+- Login button is enabled when navigating away and back, unless a lockout is triggered by login attempts.
 
 4.2 Registration Page
 - Fields: Full Name, Username, Password (6–8 characters), Confirm Password (6–8 characters).
-- Action: Submit.
+- Action: Submit, Back (navigates to Login Page).
 - Validation: All fields required; password and confirm password must match and meet length requirements; username must be unique.
 
 4.3 Forgot Password Page
 - Fields: Username, New Password (6–8 characters), Confirm New Password (6–8 characters).
-- Action: Save.
-- Validation: All fields required; password and confirm password must match and meet length requirements; username must exist.
+- Action: Save, Back (navigates to Login Page).
+- Validation: All fields required; password and confirm password must match and meet length requirements; username must exist; new password must not be the same as the old password.
+- On successful password reset, a modal alert is shown and the user is navigated back to the login page.
 
 4.4 Dashboard (MainPage)
-- Display a welcome message upon successful login.
+- Display a personalized welcome message with the user's full name.
+- Display the login count for the logged-in user.
 - Action: Logout (redirects to Login Page).
 
 ---
@@ -59,12 +64,12 @@ Out of Scope:
 - Invalid login credentials must not be accepted.
 - After 3 consecutive failed login attempts, the user account is locked for 30 seconds.
 - Lockout state and countdown timer are persisted in the local database.
-- Password reset is only allowed for existing usernames.
+- Password reset is only allowed for existing usernames and must not reuse the previous password.
 
 ---
 
 6. Data Persistence
-- All user data, authentication, and lockout states are stored in a local SQLite database.
+- All user data, authentication, login count, and lockout states are stored in a local SQLite database.
 
 ---
 
@@ -73,8 +78,9 @@ Out of Scope:
 - Register a new user and verify persistence.
 - Attempt login with valid and invalid credentials.
 - Verify lockout after 3 failed attempts and countdown timer display.
-- Reset password using Forgot Password page and verify update.
-- Access dashboard after successful login and verify welcome message.
+- Verify error message displays remaining login attempts after each failed attempt.
+- Reset password using Forgot Password page and verify update and alert.
+- Access dashboard after successful login and verify personalized welcome message and login count.
 - Logout and verify redirection to login page.
 
 ---
@@ -84,6 +90,8 @@ Out of Scope:
 - Passwords must be 6–8 characters.
 - Username must be unique during registration and valid during login and password reset.
 - Lockout and countdown timer must function as specified.
+- Login count must increment and persist for each user.
+- Password reset must not allow reuse of the previous password.
 
 ---
 
@@ -91,6 +99,7 @@ Out of Scope:
 - Login Page: Register and Forgot Password actions navigate to respective pages.
 - Successful login navigates to Dashboard.
 - Logout navigates to Login Page.
+- Registration and Forgot Password pages have Back buttons to return to Login Page.
 
 ---
 
